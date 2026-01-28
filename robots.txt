@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://jcd-voice-studio.netlify.app/sitemap.xml
+
+# Crawl delay (be polite to crawlers)
+Crawl-delay: 1
