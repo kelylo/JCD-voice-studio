@@ -12,26 +12,34 @@ const ProgressBar: React.FC<{ currentStep: AppStep }> = ({ currentStep }) => {
   const currentIndex = steps.indexOf(currentStep);
   
   return (
-    <div className="w-full max-w-2xl mx-auto mb-10">
-      <div className="flex justify-between items-center mb-2">
+    <div className="w-full max-w-3xl mx-auto mb-12">
+      <div className="relative flex justify-between items-center mb-6">
+        {/* Connection lines */}
+        <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-200 -z-10">
+          <div 
+            className="h-full bg-gradient-to-r from-[#2e6417] to-[#3a7c20] transition-all duration-500 ease-out" 
+            style={{ width: `${(currentIndex / (steps.length - 1)) * 100}%` }}
+          />
+        </div>
+        
         {steps.map((step, i) => (
-          <div key={step} className="flex flex-col items-center">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-              i <= currentIndex ? 'bg-[#2e6417] text-white shadow-lg shadow-[#2e6417]/20 scale-110' : 'bg-gray-200 text-gray-500'
+          <div key={step} className="flex flex-col items-center gap-3 relative z-10">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 transform ${
+              i <= currentIndex 
+                ? 'bg-gradient-to-br from-[#2e6417] to-[#3a7c20] text-white shadow-lg shadow-[#2e6417]/30 scale-110 ring-4 ring-[#2e6417]/10' 
+                : 'bg-white border-2 border-gray-300 text-gray-400 hover:border-gray-400'
             }`}>
-              {i < currentIndex ? <i className="fas fa-check text-[10px]"></i> : (i + 1)}
+              {i < currentIndex ? (
+                <i className="fas fa-check text-sm animate-in zoom-in duration-300"></i>
+              ) : (
+                <span className="text-sm font-bold">{i + 1}</span>
+              )}
             </div>
-            <span className={`text-[9px] uppercase tracking-widest mt-2 font-bold ${
+            <span className={`text-[10px] uppercase tracking-wider font-bold transition-colors duration-300 ${
               i <= currentIndex ? 'text-[#2e6417]' : 'text-gray-400'
             }`}>{step}</span>
           </div>
         ))}
-      </div>
-      <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
-        <div 
-          className="h-full bg-gradient-to-r from-[#2e6417] to-[#3a7c20] transition-all duration-300 ease-out" 
-          style={{ width: `${(currentIndex / (steps.length - 1)) * 100}%` }}
-        />
       </div>
     </div>
   );
@@ -52,31 +60,41 @@ const LoadingOverlay: React.FC<{ active: boolean }> = ({ active }) => {
   if (!active) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-[#fffff6]/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
-      <div className="relative mb-8">
-        <div className="w-24 h-24 border-4 border-[#2e6417]/10 rounded-full"></div>
-        <div className="absolute inset-0 w-24 h-24 border-4 border-transparent border-t-[#2e6417] rounded-full animate-spin"></div>
-        <div className="absolute inset-2 w-20 h-20 border-4 border-transparent border-b-[#3a7c20] rounded-full animate-spin duration-[2000ms]"></div>
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-          <img
-            src={kelyloGuide}
-            alt="Loading"
-            className="opacity-30 animate-pulse"
-            style={{
-              width: '40vw',
-              height: '40vw',
-              maxWidth: 360,
-              maxHeight: 360,
-              minWidth: 160,
-              minHeight: 160
-            }}
-          />
+    <div className="fixed inset-0 z-[100] bg-gradient-to-br from-[#fffff6]/95 via-white/90 to-green-50/80 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
+      <div className="relative mb-10">
+        {/* Outer glow ring */}
+        <div className="absolute inset-[-20px] bg-gradient-to-r from-[#2e6417]/5 to-[#3a7c20]/5 rounded-full blur-2xl"></div>
+        
+        {/* Spinning rings */}
+        <div className="relative w-32 h-32">
+          <div className="absolute inset-0 border-4 border-[#2e6417]/20 rounded-full"></div>
+          <div className="absolute inset-0 border-4 border-transparent border-t-[#2e6417] rounded-full animate-spin"></div>
+          <div className="absolute inset-2 border-4 border-transparent border-b-[#3a7c20] rounded-full animate-spin" style={{ animationDuration: '1.5s', animationDirection: 'reverse' }}></div>
+          <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+            <img
+              src={kelyloGuide}
+              alt="Loading"
+              className="opacity-40 animate-pulse w-16 h-16"
+            />
+          </div>
         </div>
       </div>
-      <h3 className="text-xl sm:text-2xl font-serif text-[#2e6417] mb-2 tracking-tight">Processing</h3>
-      <p className="text-sm sm:text-base text-gray-600 font-medium transition-all duration-500 animate-in slide-in-from-bottom-2 px-4">
-        {UPLIFTING_MESSAGES[msgIndex]}
-      </p>
+      
+      <div className="max-w-md">
+        <h3 className="text-2xl sm:text-3xl font-serif text-[#2e6417] mb-3 tracking-tight font-bold">Processing</h3>
+        <p className="text-sm sm:text-base text-gray-600 font-medium transition-all duration-500 animate-in slide-in-from-bottom-2 px-4">
+          {UPLIFTING_MESSAGES[msgIndex]}
+        </p>
+        <div className="mt-6 flex justify-center gap-1">
+          {[0, 1, 2].map((i) => (
+            <div 
+              key={i} 
+              className="w-2 h-2 rounded-full bg-[#2e6417]/60 animate-pulse"
+              style={{ animationDelay: `${i * 0.2}s` }}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
@@ -169,8 +187,8 @@ const GuideWidget: React.FC<{
       }}
     >
       <div
-        className={`bg-white/90 backdrop-blur-md border border-gray-100 shadow-xl rounded-2xl ${sizeClasses} p-3 flex gap-3 items-start select-none cursor-move`}
-        style={{ boxShadow: '0 10px 30px rgba(46,100,23,0.12)' }}
+        className={`bg-white/95 backdrop-blur-xl border border-gray-200/50 shadow-2xl rounded-3xl ${sizeClasses} p-4 flex gap-3 items-start select-none cursor-move hover:shadow-[#2e6417]/10 transition-all duration-300`}
+        style={{ boxShadow: '0 20px 40px rgba(46,100,23,0.15), 0 0 0 1px rgba(46,100,23,0.05)' }}
         onPointerDown={(e) => {
           draggingRef.current = true;
           offsetRef.current = {
@@ -179,18 +197,21 @@ const GuideWidget: React.FC<{
           };
         }}
       >
-        <img
-          src={kelyloGuide}
-          alt="Guide"
-          className="w-9 h-9 rounded-lg border border-gray-100 object-contain"
-        />
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#2e6417]/10 to-[#3a7c20]/10 rounded-xl blur"></div>
+          <img
+            src={kelyloGuide}
+            alt="Guide"
+            className="relative w-10 h-10 rounded-xl border border-[#2e6417]/20 object-contain bg-white p-1"
+          />
+        </div>
         <div className="flex-1">
           <div className="flex items-center justify-between">
             <span className="text-[#2e6417] font-black uppercase tracking-widest text-[9px]">Guide</span>
             <button
               className="text-gray-400 hover:text-[#2e6417] transition-colors"
               onClick={() => setOpen(prev => !prev)}
-              aria-label="Guide settings"
+              aria-label="Toggle guide settings"
               data-kelylo="Open guide settings."
             >
               <i className="fas fa-sliders-h text-[10px]"></i>
@@ -299,6 +320,7 @@ const CustomAudioPlayer: React.FC<{ url: string }> = ({ url }) => {
             max="100"
             value={progress}
             onChange={handleScrub}
+            aria-label="Audio progress scrubber"
           />
         </div>
       </div>
@@ -333,6 +355,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showQuickAccess, setShowQuickAccess] = useState(false);
   const [guidePosition, setGuidePosition] = useState({ x: 0, y: 0 });
   const [guideSize, setGuideSize] = useState<GuideSize>('md');
   const [history, setHistory] = useState<{ id: string; title: string; detail?: string; time: string }[]>([]);
@@ -479,18 +502,18 @@ export default function App() {
           </div>
         </div>
       </div>
-      <header className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between border-b border-gray-100 bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+      <header className="px-4 sm:px-6 py-4 flex items-center justify-between border-b border-gray-200/50 bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm transition-all duration-300 hover:shadow-md">
         <div className="flex items-center gap-3">
           <button
-            className="w-9 h-9 rounded-xl border border-gray-200 text-gray-500 hover:text-[#2e6417] hover:border-[#2e6417]/30 transition-colors"
+            className="w-10 h-10 rounded-xl border border-gray-200 text-gray-600 hover:text-[#2e6417] hover:border-[#2e6417]/30 hover:bg-[#2e6417]/5 transition-all duration-200 active:scale-95"
             onClick={() => setIsMenuOpen(prev => !prev)}
             data-kelylo="Toggle the main menu."
             aria-label="Toggle menu"
           >
-            <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+            <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'} transition-transform duration-200`}></i>
           </button>
           <div
-            className="hover:scale-110 transition-transform cursor-pointer"
+            className="hover:scale-110 transition-all duration-300 cursor-pointer hover:drop-shadow-lg active:scale-95"
             onClick={handleStartOver}
             data-kelylo="Start over and reset the project."
           >
@@ -500,22 +523,25 @@ export default function App() {
         </div>
         
         <div className="hidden md:flex items-center gap-2 glass-pill px-4 py-2 rounded-full border border-gray-100">
-          <a href="https://www.youtube.com/@JesusChosenDiary" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-red-600 transition-colors px-2 text-[10px] font-black uppercase tracking-widest" data-kelylo="Open the YouTube channel in a new tab.">
+          <a href="https://www.youtube.com/@JesusChosenDiary" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-red-600 transition-colors px-2 text-[10px] font-black uppercase tracking-widest" data-kelylo="Open the YouTube channel in a new tab.">
             <i className="fab fa-youtube mr-2"></i>YouTube
           </a>
           <div className="w-px h-4 bg-gray-200"></div>
-          <a href="https://buymeacoffee.com/jcdfamily" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-[#2e6417] transition-colors px-2 text-[10px] font-black uppercase tracking-widest" data-kelylo="Support the project on Buy Me a Coffee.">
+          <a href="https://buymeacoffee.com/jcdfamily" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#2e6417] transition-colors px-2 text-[10px] font-black uppercase tracking-widest" data-kelylo="Support the project on Buy Me a Coffee.">
             <i className="fas fa-mug-hot mr-2"></i>Support
           </a>
           <div className="w-px h-4 bg-gray-200"></div>
-          <a href="https://www.instagram.com/jesuschosendiary?igsh=M282Zm5oazlzMjBo" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-pink-600 transition-colors px-2 text-[10px] font-black uppercase tracking-widest" data-kelylo="Open the Instagram profile.">
+          <a href="https://www.instagram.com/jesuschosendiary?igsh=M282Zm5oazlzMjBo" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-pink-600 transition-colors px-2 text-[10px] font-black uppercase tracking-widest" data-kelylo="Open the Instagram profile.">
             <i className="fab fa-instagram mr-2"></i>Instagram
           </a>
         </div>
 
         <div className="flex items-center gap-3">
-           <div className="flex items-center gap-2 bg-green-50 text-[#2e6417] px-3 py-1.5 rounded-full text-[9px] font-black border border-green-100 tracking-widest uppercase">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+           <div className="flex items-center gap-2 bg-gradient-to-r from-green-50 to-emerald-50 text-[#2e6417] px-4 py-2 rounded-full text-[10px] font-black border border-green-200/50 tracking-widest uppercase shadow-sm hover:shadow-md transition-shadow">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
               Live API
            </div>
         </div>
@@ -524,8 +550,9 @@ export default function App() {
       {/* Menu bar beneath header */}
       {isMenuOpen && (
         <nav className="sticky top-[73px] z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-lg animate-in slide-in-from-top-2 duration-200">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4">
-            <div className="flex flex-col gap-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+            {/* Mobile: Vertical Layout */}
+            <div className="flex flex-col gap-6 md:hidden">
               {/* Sections */}
               <div>
                 <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Sections</div>
@@ -546,12 +573,12 @@ export default function App() {
               <div>
                 <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Quick Actions</div>
                 <div className="flex flex-col gap-2">
-                  <button onClick={() => { handleStartOver(); setIsMenuOpen(false); }} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest text-left transition-colors" data-kelylo="Start fresh and reset everything.">
+                  <button onClick={() => { handleStartOver(); setIsMenuOpen(false); }} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest text-left w-full transition-colors" data-kelylo="Start fresh and reset everything.">
                     <i className="fas fa-redo mr-2"></i>Start Over
                   </button>
-                  <a href="#quick-access" onClick={() => setIsMenuOpen(false)} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="View your work history.">
+                  <button onClick={() => { setShowQuickAccess(true); setIsMenuOpen(false); }} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest text-left w-full transition-colors" data-kelylo="View your work history.">
                     <i className="fas fa-history mr-2"></i>Session History
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -559,14 +586,66 @@ export default function App() {
               <div>
                 <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Connect</div>
                 <div className="flex flex-col gap-2">
-                  <a href="https://www.youtube.com/@JesusChosenDiary" target="_blank" rel="noreferrer" className="px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Open the YouTube channel.">
+                  <a href="https://www.youtube.com/@JesusChosenDiary" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Open the YouTube channel.">
                     <i className="fab fa-youtube text-red-600"></i>YouTube
                   </a>
-                  <a href="https://buymeacoffee.com/jcdfamily" target="_blank" rel="noreferrer" className="px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Support us on Buy Me a Coffee.">
+                  <a href="https://buymeacoffee.com/jcdfamily" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Support us on Buy Me a Coffee.">
                     <i className="fas fa-mug-hot text-yellow-600"></i>Buy Me a Coffee
                   </a>
-                  <a href="https://www.instagram.com/jesuschosendiary?igsh=M282Zm5oazlzMjBo" target="_blank" rel="noreferrer" className="px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Open Instagram profile.">
+                  <a href="https://www.instagram.com/jesuschosendiary?igsh=M282Zm5oazlzMjBo" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="px-3 py-2 rounded-xl hover:bg-gray-50 flex items-center gap-2 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Open Instagram profile.">
                     <i className="fab fa-instagram text-pink-600"></i>Instagram
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Tablet/Desktop: Horizontal Layout */}
+            <div className="hidden md:flex md:items-center md:justify-center md:gap-8">
+              {/* Sections */}
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Sections:</span>
+                <div className="flex items-center gap-2">
+                  <a href="#features" onClick={() => setIsMenuOpen(false)} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="See the features we offer.">
+                    <i className="fas fa-star mr-2"></i>Features
+                  </a>
+                  <button onClick={() => { setShowQuickAccess(true); setIsMenuOpen(false); }} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Open quick access downloads.">
+                    <i className="fas fa-bolt mr-2"></i>Quick Access
+                  </button>
+                  <a href="#about" onClick={() => setIsMenuOpen(false)} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Learn about us.">
+                    <i className="fas fa-info-circle mr-2"></i>About Us
+                  </a>
+                </div>
+              </div>
+
+              <div className="w-px h-6 bg-gray-200"></div>
+
+              {/* Quick Actions */}
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Actions:</span>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => { handleStartOver(); setIsMenuOpen(false); }} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Start fresh and reset everything.">
+                    <i className="fas fa-redo mr-2"></i>Start Over
+                  </button>
+                  <button onClick={() => { setShowQuickAccess(true); setIsMenuOpen(false); }} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="View your work history.">
+                    <i className="fas fa-history mr-2"></i>History
+                  </button>
+                </div>
+              </div>
+
+              <div className="w-px h-6 bg-gray-200"></div>
+
+              {/* Connect */}
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Connect:</span>
+                <div className="flex items-center gap-2">
+                  <a href="https://www.youtube.com/@JesusChosenDiary" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Open the YouTube channel." aria-label="YouTube Channel">
+                    <i className="fab fa-youtube text-red-600"></i>
+                  </a>
+                  <a href="https://buymeacoffee.com/jcdfamily" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Support us on Buy Me a Coffee." aria-label="Buy Me a Coffee">
+                    <i className="fas fa-mug-hot text-yellow-600"></i>
+                  </a>
+                  <a href="https://www.instagram.com/jesuschosendiary?igsh=M282Zm5oazlzMjBo" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="px-3 py-2 rounded-xl hover:bg-gray-50 text-gray-700 text-[11px] font-black uppercase tracking-widest transition-colors" data-kelylo="Open Instagram profile." aria-label="Instagram Profile">
+                    <i className="fab fa-instagram text-pink-600"></i>
                   </a>
                 </div>
               </div>
@@ -577,11 +656,11 @@ export default function App() {
 
       {/* Shortcuts Modal */}
       {showShortcuts && (
-        <div className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center p-4" onClick={() => setShowShortcuts(false)}>
-          <div className="bg-white rounded-2xl p-4 sm:p-6 max-w-md w-full shadow-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()} data-kelylo="Learn keyboard shortcuts to work faster.">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-black text-[#2e6417] uppercase tracking-tight">Keyboard Shortcuts</h3>
-              <button onClick={() => setShowShortcuts(false)} className="text-gray-400 hover:text-[#2e6417]" data-kelylo="Close shortcuts guide.">
+        <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setShowShortcuts(false)}>
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()} data-kelylo="Learn keyboard shortcuts to work faster.">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-black text-[#2e6417] uppercase tracking-tight">Keyboard Shortcuts</h3>
+              <button onClick={() => setShowShortcuts(false)} className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-[#2e6417] hover:bg-gray-100 transition-colors" data-kelylo="Close shortcuts guide." aria-label="Close shortcuts guide">
                 <i className="fas fa-times"></i>
               </button>
             </div>
@@ -611,80 +690,58 @@ export default function App() {
         </div>
       )}
 
-      <main className="flex-1 container mx-auto px-4 py-6 sm:py-8 max-w-4xl">
-        <ProgressBar currentStep={step} />
-
-        <section id="features" className="mb-10" data-kelylo="Overview of key features in this studio.">
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <h3 className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2">Features</h3>
-            <ul className="text-sm text-gray-600 space-y-2 mb-4">
-              <li>• Draft to refined script with tone control.</li>
-              <li>• Multiple faith‑focused voices for audio generation.</li>
-              <li>• Studio playback with download and copy tools.</li>
-              <li>• Smart guide (Kelylo) with hover tips and encouragement.</li>
-              <li>• Randomized premade stories for instant inspiration.</li>
-              <li>• Keyboard shortcuts for faster workflow.</li>
-            </ul>
-            <div className="flex flex-wrap gap-3 pt-3 border-t border-gray-100">
-              <button
-                onClick={() => setShowShortcuts(true)}
-                className="px-4 py-2 rounded-full bg-[#2e6417]/10 text-[#2e6417] text-[10px] font-black uppercase tracking-widest hover:bg-[#2e6417]/20 transition-colors"
-                data-kelylo="View all keyboard shortcuts."
-              >
-                <i className="fas fa-keyboard mr-2"></i>Shortcuts
-              </button>
-              <button
-                onClick={() => {
-                  const shortcuts = `JCD VOICE STUDIO - KEYBOARD SHORTCUTS GUIDE\n\n` +
-                    `Ctrl + Enter: Proceed to next step\n` +
-                    `Ctrl + Shift + C: Copy current text\n` +
-                    `Esc: Go back one step\n` +
-                    `Ctrl + Shift + R: Start over\n\n` +
-                    `These shortcuts help you work faster and stay focused on creating great content.\n\n` +
-                    `Visit: JCD Voice Studio v2`;
-                  const blob = new Blob([shortcuts], { type: 'text/plain' });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = 'jcd-shortcuts-guide.txt';
-                  a.click();
-                  URL.revokeObjectURL(url);
-                }}
-                className="px-4 py-2 rounded-full bg-gray-50 text-gray-600 text-[10px] font-black uppercase tracking-widest hover:bg-gray-100 transition-colors"
-                data-kelylo="Download shortcuts guide as text file."
-              >
-                <i className="fas fa-download mr-2"></i>Download Guide
+      {/* Quick Access Modal */}
+      {showQuickAccess && (
+        <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setShowQuickAccess(false)}>
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-4xl w-full shadow-2xl max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()} data-kelylo="Quick access to your drafts, refined text, and session history.">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h3 className="text-2xl font-black text-[#2e6417] uppercase tracking-tight">Quick Access</h3>
+                <p className="text-sm text-gray-500 mt-1">Your draft, refined text, and session history</p>
+              </div>
+              <button onClick={() => setShowQuickAccess(false)} className="w-10 h-10 flex items-center justify-center rounded-xl text-gray-400 hover:text-[#2e6417] hover:bg-gray-100 transition-all active:scale-95" data-kelylo="Close quick access." aria-label="Close quick access">
+                <i className="fas fa-times text-lg"></i>
               </button>
             </div>
-          </div>
-        </section>
-
-        <section id="quick-access" className="mb-10" data-kelylo="Quick access downloads for your text and audio.">
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <h3 className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2">Quick Access</h3>
-            <p className="text-sm text-gray-500 mb-4">See your draft, refined text, and session history.</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div className="bg-gray-50 rounded-2xl p-4" data-kelylo="Your current draft text.">
-                <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Draft</div>
-                <p className="text-sm text-gray-600 whitespace-pre-wrap line-clamp-6">{state.originalText || 'No draft yet.'}</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 rounded-2xl p-5 border border-gray-200/50 hover:shadow-md transition-shadow" data-kelylo="Your current draft text.">
+                <div className="flex items-center gap-2 mb-3">
+                  <i className="fas fa-file-alt text-[#2e6417]"></i>
+                  <div className="text-[11px] font-black uppercase tracking-widest text-gray-600">Draft</div>
+                </div>
+                <p className="text-sm text-gray-700 whitespace-pre-wrap max-h-48 overflow-y-auto leading-relaxed">{state.originalText || 'No draft yet.'}</p>
               </div>
-              <div className="bg-gray-50 rounded-2xl p-4" data-kelylo="Your current refined text.">
-                <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Refined</div>
-                <p className="text-sm text-gray-600 whitespace-pre-wrap line-clamp-6">{state.refinedText || 'No refined text yet.'}</p>
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50/50 rounded-2xl p-5 border border-green-200/50 hover:shadow-md transition-shadow" data-kelylo="Your current refined text.">
+                <div className="flex items-center gap-2 mb-3">
+                  <i className="fas fa-sparkles text-[#2e6417]"></i>
+                  <div className="text-[11px] font-black uppercase tracking-widest text-[#2e6417]">Refined</div>
+                </div>
+                <p className="text-sm text-gray-700 whitespace-pre-wrap max-h-48 overflow-y-auto leading-relaxed">{state.refinedText || 'No refined text yet.'}</p>
               </div>
             </div>
-            <div className="bg-gray-50 rounded-2xl p-4 mb-4" data-kelylo="Your recent activity history.">
-              <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">History</div>
-              <ul className="text-sm text-gray-600 space-y-1 max-h-28 overflow-auto">
-                {history.length === 0 && <li>No history yet.</li>}
+            
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50/30 rounded-2xl p-5 mb-6 border border-blue-200/50" data-kelylo="Your recent activity history.">
+              <div className="flex items-center gap-2 mb-4">
+                <i className="fas fa-history text-blue-600"></i>
+                <div className="text-[11px] font-black uppercase tracking-widest text-blue-900">Session History</div>
+              </div>
+              <ul className="text-sm text-gray-600 space-y-2 max-h-48 overflow-auto">
+                {history.length === 0 && <li className="text-gray-400 italic">No history yet.</li>}
                 {history.map(item => (
-                  <li key={item.id}>
-                    <span className="font-semibold">{item.title}</span>{item.detail ? ` · ${item.detail}` : ''} · {item.time}
+                  <li key={item.id} className="flex items-start gap-2 py-2 border-b border-gray-200 last:border-0">
+                    <i className="fas fa-circle text-[6px] text-[#2e6417] mt-1.5"></i>
+                    <div className="flex-1">
+                      <span className="font-semibold text-gray-800">{item.title}</span>
+                      {item.detail && <span className="text-gray-500"> · {item.detail}</span>}
+                      <span className="text-gray-400 text-xs block mt-0.5">{item.time}</span>
+                    </div>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="flex flex-wrap gap-3">
+            
+            <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-200">
               <button
                 onClick={() => {
                   const blob = new Blob([state.originalText || ''], { type: 'text/plain' });
@@ -699,10 +756,10 @@ export default function App() {
                     ...prev
                   ]));
                 }}
-                className="px-4 py-2 rounded-full bg-gray-50 text-gray-600 text-[10px] font-black uppercase tracking-widest"
+                className="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-colors"
                 data-kelylo="Download the original draft as a TXT file."
               >
-                Download Draft
+                <i className="fas fa-download mr-2"></i>Download Draft
               </button>
               <button
                 onClick={() => {
@@ -718,33 +775,32 @@ export default function App() {
                     ...prev
                   ]));
                 }}
-                className="px-4 py-2 rounded-full bg-gray-50 text-gray-600 text-[10px] font-black uppercase tracking-widest"
+                className="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-colors"
                 data-kelylo="Download the refined script as a TXT file."
               >
-                Download Refined
+                <i className="fas fa-download mr-2"></i>Download Refined
               </button>
               <button
-                onClick={downloadAudio}
+                onClick={() => {
+                  downloadAudio();
+                  setHistory(prev => ([
+                    { id: `download-audio-${Date.now()}`, title: 'Downloaded audio', time: new Date().toLocaleTimeString() },
+                    ...prev
+                  ]));
+                }}
                 disabled={!state.audioUrl}
-                className="px-4 py-2 rounded-full bg-[#2e6417] text-white text-[10px] font-black uppercase tracking-widest disabled:opacity-50"
+                className="px-4 py-2 rounded-full bg-[#2e6417] text-white text-[10px] font-black uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#3a7c20] transition-colors"
                 data-kelylo="Download the generated audio (WAV)."
               >
-                Download Audio
+                <i className="fas fa-download mr-2"></i>Download Audio
               </button>
             </div>
           </div>
-        </section>
+        </div>
+      )}
 
-        <section id="about" className="mb-10" data-kelylo="Learn about JCD Voice Studio and our mission.">
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <h3 className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2">About Us</h3>
-            <p className="text-sm text-gray-600">
-              JCD Voice Studio helps creators craft faith‑centered scripts and turn them into inspiring audio. We combine
-              thoughtful refinement, guided encouragement, and voice synthesis so your message can reach listeners with
-              clarity and warmth.
-            </p>
-          </div>
-        </section>
+      <main className="flex-1 container mx-auto px-4 py-6 sm:py-8 max-w-4xl">
+        <ProgressBar currentStep={step} />
 
         {/* Step: DRAFT */}
         {step === AppStep.DRAFT && (
@@ -763,7 +819,7 @@ export default function App() {
               </div>
 
               <textarea 
-                className="w-full h-72 p-8 rounded-3xl bg-gray-50/50 border-2 border-transparent focus:bg-white focus:border-[#2e6417]/20 focus:ring-8 focus:ring-[#2e6417]/5 outline-none transition-all text-xl leading-relaxed resize-none placeholder:text-gray-300 font-medium"
+                className="w-full h-72 p-8 rounded-3xl bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 focus:bg-white focus:border-[#2e6417]/30 focus:ring-4 focus:ring-[#2e6417]/10 outline-none transition-all duration-300 text-xl leading-relaxed resize-none placeholder:text-gray-300 font-medium hover:border-gray-300"
                 placeholder="Share the message God has put on your heart..."
                 value={state.originalText}
                 autoFocus
@@ -775,17 +831,18 @@ export default function App() {
                 <button 
                   onClick={handleRefine}
                   disabled={!state.originalText.trim() || loading}
-                  className="px-10 py-5 bg-gradient-to-r from-[#2e6417] to-[#3a7c20] text-white rounded-full font-black shadow-xl shadow-[#2e6417]/20 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+                  className="group px-10 py-5 bg-gradient-to-r from-[#2e6417] to-[#3a7c20] text-white rounded-full font-black shadow-xl shadow-[#2e6417]/30 hover:shadow-2xl hover:shadow-[#2e6417]/40 hover:scale-105 active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 disabled:hover:scale-100"
                   data-kelylo="Refine your draft with AI."
                 >
-                  <i className="fas fa-magic"></i>
+                  <i className="fas fa-magic group-hover:rotate-12 transition-transform duration-300"></i>
                   Refine Script
                 </button>
                 <button 
                   onClick={() => setState(prev => ({ ...prev, originalText: '' }))}
-                  className="px-6 py-4 text-gray-400 font-bold hover:text-red-500 transition-colors text-xs uppercase tracking-widest"
+                  className="px-6 py-4 text-gray-500 font-bold hover:text-red-500 hover:bg-red-50 rounded-full transition-all text-xs uppercase tracking-widest active:scale-95"
                   data-kelylo="Clear the draft text."
                 >
+                  <i className="fas fa-times mr-2"></i>
                   Clear All
                 </button>
                 <button 
@@ -799,9 +856,10 @@ export default function App() {
                       ]));
                     }
                   }}
-                  className="px-6 py-3 text-[#2e6417] font-black text-[10px] uppercase tracking-widest border-2 border-[#2e6417]/10 rounded-full hover:bg-[#2e6417]/5 transition-all"
+                  className="px-6 py-3 text-[#2e6417] font-black text-[10px] uppercase tracking-widest border-2 border-[#2e6417]/20 rounded-full hover:bg-[#2e6417]/10 hover:border-[#2e6417]/40 transition-all active:scale-95"
                   data-kelylo="Load a random premade story into the editor."
                 >
+                  <i className="fas fa-lightbulb mr-2"></i>
                   Load Example
                 </button>
               </div>
@@ -825,11 +883,14 @@ export default function App() {
                   value={state.refinedText}
                   onChange={(e) => setState(prev => ({ ...prev, refinedText: e.target.value }))}
                   data-kelylo="Edit the refined text here."
+                  aria-label="Refined text editor"
+                  title="Edit refined text"
                 />
                 <button 
                   onClick={() => copyToClipboard(state.refinedText)}
-                  className="absolute bottom-4 right-4 p-3 bg-gray-50 text-gray-400 hover:text-[#2e6417] rounded-full transition-all"
+                  className="absolute bottom-4 right-4 p-3 bg-gray-50 text-gray-400 hover:text-[#2e6417] hover:bg-green-50 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md"
                   data-kelylo="Copy the refined text to clipboard."
+                  aria-label="Copy refined text"
                 >
                   <i className="far fa-copy"></i>
                 </button>
@@ -838,16 +899,21 @@ export default function App() {
 
             <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm">
               <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">Tone Selection</h4>
-              <div className="flex flex-wrap gap-2 mb-10">
+              <div className="flex flex-wrap gap-3 mb-10">
                 {Object.values(RefinementStyle).map(styleVal => (
                   <button 
                     key={styleVal}
                     onClick={() => setState(prev => ({ ...prev, selectedStyle: styleVal }))}
-                    className={`px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
-                      state.selectedStyle === styleVal ? 'bg-[#2e6417] text-white shadow-lg' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                    className={`group px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 active:scale-95 ${
+                      state.selectedStyle === styleVal 
+                        ? 'bg-gradient-to-r from-[#2e6417] to-[#3a7c20] text-white shadow-lg shadow-[#2e6417]/30 scale-105' 
+                        : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 hover:scale-105'
                     }`}
                     data-kelylo={`Set the refinement tone to ${styleVal}.`}
                   >
+                    {state.selectedStyle === styleVal && (
+                      <i className="fas fa-check mr-2 animate-in zoom-in duration-200"></i>
+                    )}
                     {styleVal}
                   </button>
                 ))}
@@ -856,16 +922,18 @@ export default function App() {
               <div className="flex flex-wrap items-center gap-4 pt-6 border-t border-gray-50">
                 <button 
                   onClick={() => goToStep(AppStep.VOICE)}
-                  className="px-10 py-5 bg-[#2e6417] text-white rounded-full font-black shadow-xl hover:scale-105 transition-all flex items-center gap-3"
+                  className="group px-10 py-5 bg-gradient-to-r from-[#2e6417] to-[#3a7c20] text-white rounded-full font-black shadow-xl shadow-[#2e6417]/30 hover:shadow-2xl hover:shadow-[#2e6417]/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3"
                   data-kelylo="Continue to voice selection."
                 >
                   Next Step
-                  <i className="fas fa-arrow-right"></i>
+                  <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
                 </button>
-                <button onClick={handleRefine} className="px-6 py-4 text-[#2e6417] font-black text-[10px] uppercase tracking-widest" data-kelylo="Refine the text again with the current tone.">
+                <button onClick={handleRefine} className="px-6 py-4 text-[#2e6417] font-black text-[10px] uppercase tracking-widest hover:bg-green-50 rounded-full transition-all active:scale-95" data-kelylo="Refine the text again with the current tone.">
+                  <i className="fas fa-redo mr-2"></i>
                   Refine Again
                 </button>
-                <button onClick={() => goToStep(AppStep.DRAFT)} className="px-6 py-4 text-gray-400 font-black text-[10px] uppercase tracking-widest" data-kelylo="Go back to the draft editor.">
+                <button onClick={() => goToStep(AppStep.DRAFT)} className="px-6 py-4 text-gray-500 font-black text-[10px] uppercase tracking-widest hover:bg-gray-100 rounded-full transition-all active:scale-95" data-kelylo="Go back to the draft editor.">
+                  <i className="fas fa-arrow-left mr-2"></i>
                   Back to Draft
                 </button>
               </div>
@@ -887,20 +955,27 @@ export default function App() {
                    <button 
                     key={voice.name + voice.id}
                     onClick={() => setState(prev => ({ ...prev, selectedVoice: voice.id }))}
-                    className={`p-6 rounded-3xl border-2 transition-all text-left flex items-center gap-5 ${
-                      state.selectedVoice === voice.id ? 'border-[#2e6417] bg-green-50/30' : 'border-gray-50 hover:border-gray-200'
+                    className={`group p-6 rounded-2xl border-2 transition-all duration-300 text-left flex items-center gap-5 hover:shadow-lg active:scale-95 ${
+                      state.selectedVoice === voice.id 
+                        ? 'border-[#2e6417] bg-gradient-to-br from-green-50 to-emerald-50/50 shadow-md shadow-[#2e6417]/10' 
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
                     }`}
                     data-kelylo={`Select the ${voice.name} voice.`}
                    >
-                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-lg ${
-                        state.selectedVoice === voice.id ? 'bg-[#2e6417] text-white' : 'bg-gray-100 text-gray-400'
+                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl transition-all duration-300 ${
+                        state.selectedVoice === voice.id 
+                          ? 'bg-gradient-to-br from-[#2e6417] to-[#3a7c20] text-white shadow-lg shadow-[#2e6417]/30 scale-110' 
+                          : 'bg-gray-100 text-gray-400 group-hover:bg-gray-200'
                      }`}>
                        <i className={`fas ${voice.gender === 'female' ? 'fa-female' : 'fa-male'}`}></i>
                      </div>
                      <div className="flex-1">
-                       <span className="font-black text-gray-800 tracking-tight block">{voice.name}</span>
-                       <span className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">{voice.style} style</span>
+                       <span className="font-black text-gray-900 tracking-tight block text-lg">{voice.name}</span>
+                       <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">{voice.style} style</span>
                      </div>
+                     {state.selectedVoice === voice.id && (
+                       <i className="fas fa-check-circle text-[#2e6417] text-xl animate-in zoom-in duration-200"></i>
+                     )}
                    </button>
                  ))}
                </div>
@@ -908,13 +983,14 @@ export default function App() {
                <div className="flex gap-6 mt-12 pt-10 border-t border-gray-50">
                  <button 
                     onClick={handleGenerateVoice}
-                    className="px-12 py-5 bg-[#2e6417] text-white rounded-full font-black shadow-2xl hover:scale-105 transition-all flex items-center gap-3"
+                    className="group px-12 py-5 bg-gradient-to-r from-[#2e6417] to-[#3a7c20] text-white rounded-full font-black shadow-2xl shadow-[#2e6417]/30 hover:shadow-[#2e6417]/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3"
                     data-kelylo="Generate audio using the selected voice."
                   >
-                    <i className="fas fa-volume-up"></i>
+                    <i className="fas fa-volume-up group-hover:animate-pulse"></i>
                     Generate Audio
                   </button>
-                  <button onClick={() => goToStep(AppStep.REFINE)} className="text-gray-400 font-black text-[10px] uppercase tracking-widest" data-kelylo="Go back to refine the text.">
+                  <button onClick={() => goToStep(AppStep.REFINE)} className="px-6 py-4 text-gray-500 font-black text-[10px] uppercase tracking-widest hover:bg-gray-100 rounded-full transition-all active:scale-95" data-kelylo="Go back to refine the text.">
+                    <i className="fas fa-arrow-left mr-2"></i>
                     Back
                   </button>
                </div>
@@ -926,8 +1002,11 @@ export default function App() {
         {step === AppStep.STUDIO && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
             <div className="bg-white p-12 rounded-[3.5rem] shadow-2xl border border-gray-50 text-center flex flex-col items-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-[#2e6417] to-[#3a7c20] rounded-[2rem] flex items-center justify-center mb-8 shadow-xl shadow-[#2e6417]/20 rotate-6">
-                <i className="fas fa-check text-white text-3xl"></i>
+              <div className="relative w-28 h-28 mb-8">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#2e6417] to-[#3a7c20] rounded-[2rem] flex items-center justify-center shadow-2xl shadow-[#2e6417]/30 rotate-6 animate-in spin-in-180 duration-500">
+                  <i className="fas fa-check text-white text-4xl animate-in zoom-in duration-300 delay-100"></i>
+                </div>
+                <div className="absolute -inset-2 bg-gradient-to-br from-[#2e6417]/20 to-[#3a7c20]/20 rounded-[2rem] blur-xl -z-10 animate-pulse"></div>
               </div>
               
               <h2 className="text-4xl font-serif font-black text-gray-900 mb-2">Studio Master</h2>
@@ -942,46 +1021,136 @@ export default function App() {
               <div className="flex flex-wrap justify-center gap-4 w-full max-w-xl">
                 <button 
                   onClick={downloadAudio}
-                  className="flex-1 px-8 py-6 bg-gradient-to-r from-[#2e6417] to-[#3a7c20] text-white rounded-3xl font-black shadow-2xl hover:scale-[1.02] transition-all flex items-center justify-center gap-3"
+                  className="group flex-1 px-8 py-6 bg-gradient-to-r from-[#2e6417] to-[#3a7c20] text-white rounded-3xl font-black shadow-2xl shadow-[#2e6417]/30 hover:shadow-[#2e6417]/40 hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-3"
                   data-kelylo="Download the audio as a WAV file."
                 >
-                  <i className="fas fa-download text-xl"></i>
+                  <i className="fas fa-download text-xl group-hover:animate-bounce"></i>
                   <span>Download WAV</span>
                 </button>
                 <button 
                   onClick={() => copyToClipboard(state.refinedText)}
-                  className="flex-1 px-8 py-6 bg-white text-[#2e6417] border-2 border-[#2e6417]/10 rounded-3xl font-black hover:bg-green-50/50 transition-all flex items-center justify-center gap-3"
+                  className="group flex-1 px-8 py-6 bg-white text-[#2e6417] border-2 border-[#2e6417]/20 rounded-3xl font-black hover:bg-green-50 hover:border-[#2e6417]/40 transition-all duration-300 active:scale-95 flex items-center justify-center gap-3"
                   data-kelylo="Copy the final script to clipboard."
                 >
-                  <i className="far fa-file-alt"></i>
+                  <i className="far fa-file-alt group-hover:scale-110 transition-transform"></i>
                   <span>Copy Script</span>
                 </button>
               </div>
 
               <div className="mt-16 pt-8 border-t border-gray-100 w-full flex justify-center">
-                <button onClick={handleStartOver} className="text-[#2e6417] font-black text-[10px] uppercase tracking-[0.2em] flex items-center gap-3 bg-gray-50 px-8 py-3 rounded-full hover:bg-gray-100 transition-all" data-kelylo="Start a new recording from scratch.">
-                  <i className="fas fa-plus"></i>
+                <button onClick={handleStartOver} className="group text-[#2e6417] font-black text-[10px] uppercase tracking-[0.2em] flex items-center gap-3 bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-4 rounded-full hover:from-green-50 hover:to-emerald-50 transition-all duration-300 shadow-sm hover:shadow-md active:scale-95" data-kelylo="Start a new recording from scratch.">
+                  <i className="fas fa-plus group-hover:rotate-90 transition-transform duration-300"></i>
                   New Recording
                 </button>
               </div>
             </div>
           </div>
         )}
+
+        {/* Features, Quick Access, and About sections - positioned below main workflow */}
+        <section id="features" className="mb-10 mt-16 scroll-mt-20" data-kelylo="Overview of key features in this studio.">
+          <div className="bg-gradient-to-br from-white to-gray-50/50 p-8 rounded-3xl border border-gray-200/50 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#2e6417] to-[#3a7c20] flex items-center justify-center shadow-lg shadow-[#2e6417]/20">
+                <i className="fas fa-star text-white"></i>
+              </div>
+              <h3 className="text-sm font-black uppercase tracking-widest text-[#2e6417]">Features</h3>
+            </div>
+            <ul className="text-sm text-gray-700 space-y-3 mb-6 ml-1">
+              <li className="flex items-start gap-3">
+                <i className="fas fa-check-circle text-[#2e6417] mt-0.5"></i>
+                <span>Draft to refined script with tone control</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <i className="fas fa-check-circle text-[#2e6417] mt-0.5"></i>
+                <span>Multiple faith‑focused voices for audio generation</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <i className="fas fa-check-circle text-[#2e6417] mt-0.5"></i>
+                <span>Studio playback with download and copy tools</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <i className="fas fa-check-circle text-[#2e6417] mt-0.5"></i>
+                <span>Smart guide (Kelylo) with hover tips and encouragement</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <i className="fas fa-check-circle text-[#2e6417] mt-0.5"></i>
+                <span>Randomized premade stories for instant inspiration</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <i className="fas fa-check-circle text-[#2e6417] mt-0.5"></i>
+                <span>Keyboard shortcuts for faster workflow</span>
+              </li>
+            </ul>
+            <div className="flex flex-wrap gap-3 pt-6 border-t border-gray-200">
+              <button
+                onClick={() => setShowShortcuts(true)}
+                className="group px-5 py-3 rounded-full bg-gradient-to-r from-[#2e6417]/10 to-[#3a7c20]/10 text-[#2e6417] text-[10px] font-black uppercase tracking-widest hover:from-[#2e6417]/20 hover:to-[#3a7c20]/20 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md"
+                data-kelylo="View all keyboard shortcuts."
+              >
+                <i className="fas fa-keyboard mr-2 group-hover:animate-pulse"></i>Shortcuts
+              </button>
+              <button
+                onClick={() => {
+                  const shortcuts = `JCD VOICE STUDIO - KEYBOARD SHORTCUTS GUIDE\n\n` +
+                    `Ctrl + Enter: Proceed to next step\n` +
+                    `Ctrl + Shift + C: Copy current text\n` +
+                    `Esc: Go back one step\n` +
+                    `Ctrl + Shift + R: Start over\n\n` +
+                    `These shortcuts help you work faster and stay focused on creating great content.\n\n` +
+                    `Visit: JCD Voice Studio v2`;
+                  const blob = new Blob([shortcuts], { type: 'text/plain' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'jcd-shortcuts-guide.txt';
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+                className="group px-5 py-3 rounded-full bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-[10px] font-black uppercase tracking-widest hover:from-gray-200 hover:to-gray-300 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md"
+                data-kelylo="Download shortcuts guide as text file."
+              >
+                <i className="fas fa-download mr-2 group-hover:animate-bounce"></i>Download Guide
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section id="about" className="mb-10 scroll-mt-20" data-kelylo="Learn about JCD Voice Studio and our mission.">
+          <div className="bg-gradient-to-br from-white to-blue-50/30 p-8 rounded-3xl border border-blue-200/50 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                <i className="fas fa-info-circle text-white"></i>
+              </div>
+              <h3 className="text-sm font-black uppercase tracking-widest text-blue-900">About Us</h3>
+            </div>
+            <p className="text-sm text-gray-700 leading-relaxed">
+              JCD Voice Studio helps creators craft faith‑centered scripts and turn them into inspiring audio. We combine
+              thoughtful refinement, guided encouragement, and voice synthesis so your message can reach listeners with
+              clarity and warmth.
+            </p>
+          </div>
+        </section>
       </main>
 
-      <footer className="py-12 text-center text-[10px] font-black uppercase tracking-widest text-gray-300">
-         <div className="flex flex-wrap items-center justify-center gap-4 mb-3">
-           <a href="https://www.youtube.com/@JesusChosenDiary" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-red-600" data-kelylo="Open the YouTube channel.">
-             YouTube
+      <footer className="py-16 text-center text-[10px] font-black uppercase tracking-widest text-gray-300 border-t border-gray-200">
+         <div className="flex flex-wrap items-center justify-center gap-6 mb-4">
+           <a href="https://www.youtube.com/@JesusChosenDiary" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-gray-400 hover:text-red-600 transition-all duration-300 hover:scale-110" data-kelylo="Open the YouTube channel." aria-label="YouTube Channel">
+             <i className="fab fa-youtube text-lg group-hover:animate-pulse"></i>
+             <span className="hidden sm:inline">YouTube</span>
            </a>
-           <a href="https://buymeacoffee.com/jcdfamily" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-[#2e6417]" data-kelylo="Support us on Buy Me a Coffee.">
-             Buy Me a Coffee
+           <a href="https://buymeacoffee.com/jcdfamily" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-gray-400 hover:text-[#2e6417] transition-all duration-300 hover:scale-110" data-kelylo="Support us on Buy Me a Coffee." aria-label="Buy Me a Coffee">
+             <i className="fas fa-mug-hot text-lg group-hover:animate-pulse"></i>
+             <span className="hidden sm:inline">Buy Me a Coffee</span>
            </a>
-           <a href="https://www.instagram.com/jesuschosendiary?igsh=M282Zm5oazlzMjBo" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-pink-600" data-kelylo="Open Instagram profile.">
-             Instagram
+           <a href="https://www.instagram.com/jesuschosendiary?igsh=M282Zm5oazlzMjBo" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-gray-400 hover:text-pink-600 transition-all duration-300 hover:scale-110" data-kelylo="Open Instagram profile." aria-label="Instagram Profile">
+             <i className="fab fa-instagram text-lg group-hover:animate-pulse"></i>
+             <span className="hidden sm:inline">Instagram</span>
            </a>
          </div>
-         <p>© {new Date().getFullYear()} Jesus Chosen Diary Studio • V2</p>
+         <div className="h-px w-24 bg-gradient-to-r from-transparent via-gray-300 to-transparent mx-auto mb-4"></div>
+         <p className="text-gray-400">© {new Date().getFullYear()} Jesus Chosen Diary Studio • V2</p>
+         <p className="text-gray-300 text-[8px] mt-2">Crafted with faith and technology</p>
       </footer>
     </div>
   );

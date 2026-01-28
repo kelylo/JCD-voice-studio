@@ -3,68 +3,202 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JCD VOICE TTS v2 - Christian AI Studio</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://esm.sh; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://generativelanguage.googleapis.com; frame-src 'none'; object-src 'none';" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    
+    <!-- Primary Meta Tags -->
+    <title>JCD Voice Studio - Christian AI Audio Studio | Faith-Based Text-to-Speech</title>
+    <meta name="title" content="JCD Voice Studio - Christian AI Audio Studio | Faith-Based Text-to-Speech" />
+    <meta name="description" content="Transform your faith-based scripts into inspiring audio with JCD Voice Studio. AI-powered Christian text-to-speech with multiple devotional voices, script refinement, and studio-quality audio generation. Perfect for sermons, testimonies, and inspirational content." />
+    <meta name="keywords" content="Christian TTS, faith-based audio, AI voice generator, sermon audio, devotional audio, testimony recorder, Christian content creator, inspirational audio, Bible reading, faith audio studio, text to speech Christian, AI sermon generator" />
+    <meta name="author" content="Jesus Chosen Diary" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <link rel="canonical" href="https://jcd-voice-studio.netlify.app/" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jcd-voice-studio.netlify.app/" />
+    <meta property="og:title" content="JCD Voice Studio - Christian AI Audio Studio" />
+    <meta property="og:description" content="Transform your faith-based scripts into inspiring audio with AI-powered Christian text-to-speech. Multiple devotional voices, script refinement, and studio-quality audio." />
+    <meta property="og:image" content="https://jcd-voice-studio.netlify.app/logo.svg" />
+    <meta property="og:site_name" content="JCD Voice Studio" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://jcd-voice-studio.netlify.app/" />
+    <meta property="twitter:title" content="JCD Voice Studio - Christian AI Audio Studio" />
+    <meta property="twitter:description" content="Transform your faith-based scripts into inspiring audio with AI-powered Christian text-to-speech." />
+    <meta property="twitter:image" content="https://jcd-voice-studio.netlify.app/logo.svg" />
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/logo.svg" />
+    <meta name="theme-color" content="#2e6417" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "JCD Voice Studio",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Any",
+      "description": "Christian AI Audio Studio for transforming faith-based scripts into inspiring audio with AI-powered text-to-speech",
+      "url": "https://jcd-voice-studio.netlify.app/",
+      "author": {
+        "@type": "Organization",
+        "name": "Jesus Chosen Diary",
+        "url": "https://www.youtube.com/@JesusChosenDiary"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "ratingCount": "1"
+      }
+    }
+    </script>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+      * {
+        scroll-behavior: smooth;
+      }
+      
       body {
         font-family: 'Inter', sans-serif;
-        background-color: #fffff6;
+        background: linear-gradient(135deg, #fffff6 0%, #fefef8 50%, #f8fef6 100%);
+        background-attachment: fixed;
         color: #1a1a2e;
       }
+      
       h1, h2, h3, h4, .font-serif {
         font-family: 'Playfair Display', serif;
       }
+      
       .glass-pill {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       }
+      
       .step-gradient {
-        background: linear-gradient(90deg, #2e6417 0%, #3a7c20 100%);
+        background: linear-gradient(135deg, #2e6417 0%, #3a7c20 100%);
       }
       
       /* Waveform animation */
       .wave-bar {
-        width: 3px;
-        background: #2e6417;
+        width: 4px;
+        background: linear-gradient(180deg, #2e6417, #3a7c20);
         border-radius: 4px;
-        transition: height 0.2s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
       .wave-active .wave-bar {
         animation: wave-animation 1.2s infinite ease-in-out;
       }
       @keyframes wave-animation {
-        0%, 100% { height: 8px; }
-        50% { height: 24px; }
+        0%, 100% { 
+          height: 10px;
+          opacity: 0.7;
+        }
+        50% { 
+          height: 28px;
+          opacity: 1;
+        }
       }
       
       /* Custom Range Input */
       input[type=range].audio-scrubber {
         -webkit-appearance: none;
         background: transparent;
+        cursor: pointer;
       }
       input[type=range].audio-scrubber::-webkit-slider-runnable-track {
         width: 100%;
-        height: 4px;
+        height: 6px;
         cursor: pointer;
-        background: #e2e8f0;
-        border-radius: 2px;
+        background: linear-gradient(90deg, #2e6417 0%, #e2e8f0 0%);
+        border-radius: 3px;
+        transition: all 0.3s ease;
       }
       input[type=range].audio-scrubber::-webkit-slider-thumb {
-        height: 12px;
-        width: 12px;
+        height: 16px;
+        width: 16px;
         border-radius: 50%;
-        background: #2e6417;
+        background: linear-gradient(135deg, #2e6417, #3a7c20);
         cursor: pointer;
         -webkit-appearance: none;
-        margin-top: -4px;
-        box-shadow: 0 0 10px rgba(46, 100, 23, 0.3);
+        margin-top: -5px;
+        box-shadow: 0 2px 8px rgba(46, 100, 23, 0.4);
+        transition: all 0.2s ease;
+      }
+      input[type=range].audio-scrubber::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+        box-shadow: 0 4px 12px rgba(46, 100, 23, 0.5);
+      }
+      
+      /* Custom Animations */
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      
+      @keyframes glow {
+        0%, 100% { box-shadow: 0 0 20px rgba(46, 100, 23, 0.2); }
+        50% { box-shadow: 0 0 40px rgba(46, 100, 23, 0.4); }
+      }
+      
+      /* Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #2e6417, #3a7c20);
+        border-radius: 10px;
+        border: 2px solid #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #3a7c20, #2e6417);
+      }
+      
+      /* Selection */
+      ::selection {
+        background: rgba(46, 100, 23, 0.2);
+        color: #2e6417;
+      }
+      
+      /* Focus visible */
+      *:focus-visible {
+        outline: 2px solid #2e6417;
+        outline-offset: 2px;
       }
     </style>
   <script type="importmap">

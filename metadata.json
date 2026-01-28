@@ -1,7 +1,11 @@
 {
-  "name": "JCD VOICE TTS v2",
-  "description": "A premium Christian AI Audio Studio for refining scripts and generating expressive, uplifting AI-powered speech.",
-  "requestFramePermissions": [
-    "microphone"
-  ]
+  "name": "JCD Voice Studio",
+  "version": "2.0.0",
+  "description": "Christian AI Audio Studio for transforming faith-based scripts into inspiring audio with AI-powered text-to-speech. Features multiple devotional voices, script refinement, and studio-quality audio generation.",
+  "author": "Jesus Chosen Diary",
+  "category": "Multimedia",
+  "tags": ["Christian", "TTS", "AI", "Audio", "Faith", "Devotional", "Sermon"],
+  "website": "https://jcd-voice-studio.netlify.app",
+  "repository": "https://github.com/kelylo/JCD-voice-studio",
+  "license": "MIT"
 }

@@ -2,10 +2,11 @@
 import { GoogleGenAI, Type, Modality } from "@google/genai";
 import { RefinementStyle } from "../types";
 
-const API_KEY = process.env.API_KEY;
+// Securely get API key from environment variables
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || process.env.API_KEY;
 
 if (!API_KEY) {
-  console.error("Gemini API Key is missing. Ensure process.env.API_KEY is configured.");
+  console.error("⚠️ Gemini API Key is missing. Please set VITE_GEMINI_API_KEY in your .env.local file.");
 }
 
 const ai = new GoogleGenAI({ apiKey: API_KEY || "" });

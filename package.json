@@ -1,12 +1,35 @@
 {
-  "name": "jcd-voice-tts-v2",
-  "private": true,
-  "version": "0.0.0",
+  "name": "jcd-voice-studio",
+  "version": "2.0.0",
+  "description": "Christian AI Audio Studio for transforming faith-based scripts into inspiring audio with AI-powered text-to-speech",
+  "keywords": [
+    "christian",
+    "tts",
+    "text-to-speech",
+    "ai",
+    "audio",
+    "faith",
+    "devotional",
+    "sermon",
+    "gemini"
+  ],
+  "author": "Jesus Chosen Diary",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kelylo/JCD-voice-studio.git"
+  },
+  "homepage": "https://jcd-voice-studio.netlify.app",
+  "bugs": {
+    "url": "https://github.com/kelylo/JCD-voice-studio/issues"
+  },
+  "private": false,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "echo 'Linting...'"
   },
   "dependencies": {
     "react": "^19.2.4",
@@ -18,5 +41,9 @@
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }
