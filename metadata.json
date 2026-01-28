@@ -1,0 +1,7 @@
+{
+  "name": "JCD VOICE TTS v2",
+  "description": "A premium Christian AI Audio Studio for refining scripts and generating expressive, uplifting AI-powered speech.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
