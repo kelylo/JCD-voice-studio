@@ -502,10 +502,10 @@ export default function App() {
           </div>
         </div>
       </div>
-      <header className="px-4 sm:px-6 py-4 flex items-center justify-between border-b border-gray-200/50 bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm transition-all duration-300 hover:shadow-md">
-        <div className="flex items-center gap-3">
+      <header className="px-4 sm:px-6 py-4 flex items-center justify-between border-b border-gray-200/50 bg-white/90 backdrop-blur-xl sticky top-0 z-50 shadow-sm">
+        <div className="flex items-center gap-4">
           <button
-            className="w-10 h-10 rounded-xl border border-gray-200 text-gray-600 hover:text-[#2e6417] hover:border-[#2e6417]/30 hover:bg-[#2e6417]/5 transition-all duration-200 active:scale-95"
+            className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#2e6417] to-[#3a7c20] text-white hover:shadow-lg hover:shadow-[#2e6417]/30 transition-all duration-300 active:scale-95 flex items-center justify-center text-lg font-bold"
             onClick={() => setIsMenuOpen(prev => !prev)}
             data-kelylo="Toggle the main menu."
             aria-label="Toggle menu"

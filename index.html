@@ -7,10 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     
     <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://esm.sh; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://generativelanguage.googleapis.com; frame-src 'none'; object-src 'none';" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="X-Frame-Options" content="DENY" />
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     
     <!-- Primary Meta Tags -->
@@ -83,15 +81,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
+      :root {
+        --primary: #2e6417;
+        --secondary: #2e6417;
+        --accent: #2e6417;
+        --light: #fffff6;
+        --dark: #1a1a2e;
+        --success: #2e6417;
+        --warning: #f39c12;
+        --gray: #7f8c8d;
+      }
+
       * {
         scroll-behavior: smooth;
       }
       
       body {
         font-family: 'Inter', sans-serif;
-        background: linear-gradient(135deg, #fffff6 0%, #fefef8 50%, #f8fef6 100%);
+        background: linear-gradient(135deg, var(--light) 0%, #fefef8 50%, #f8fef6 100%);
         background-attachment: fixed;
-        color: #1a1a2e;
+        color: var(--dark);
       }
       
       h1, h2, h3, h4, .font-serif {
